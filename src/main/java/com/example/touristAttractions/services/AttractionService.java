@@ -30,7 +30,7 @@ public class AttractionService {
              }
              Double minimumFinal = minimum; // workaround
              allAttractions.stream().filter((attraction)->{
-                 return (attraction.getActive() && attraction.getRating()>minimumFinal);
+                 return (attraction.getActive() && attraction.getRatingSum()>minimumFinal);
              }).collect(Collectors.toList());
          }
          if(name!=null){
@@ -39,5 +39,16 @@ public class AttractionService {
              }).collect(Collectors.toList());
          }
          return allAttractions;
+    }
+
+
+    public Attraction rateAttraction(Integer id, Double rating) {
+        if(!attractionRepository.existsById(id)){
+            return null;
+        }
+        Attraction attraction = attractionRepository.findById(id).get();
+        attraction.setRatingSum(attraction.getRatingSum()+rating); // setting new rating
+        attraction.setRatingsCount(attraction.getRatingsCount()+1);
+        return attractionRepository.save(attraction);
     }
 }

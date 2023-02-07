@@ -21,7 +21,8 @@ public class Attraction {
 
     private Boolean active = false;
 
-    private Double rating;
+    // storing sum to not lose precision
+    private Double ratingSum;
 
     private Integer ratingsCount;
 
@@ -69,12 +70,12 @@ public class Attraction {
         this.municipality = municipality;
     }
 
-    public Double getRating() {
-        return rating;
+    public Double getRatingSum() {
+        return ratingSum;
     }
 
-    public void setRating(Double rating) {
-        this.rating = rating;
+    public void setRatingSum(Double ratingSum) {
+        this.ratingSum = ratingSum;
     }
 
     public Integer getRatingsCount() {

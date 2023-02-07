@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -22,6 +23,15 @@ public class AttractionController {
     @GetMapping(path = "/search", produces = "application/json")
     private ResponseEntity<List<Attraction>> getActiveAttractions(@RequestParam(required = false, name = "popularity") Popularity popularity, @RequestParam(required = false, name = "name") String name){
         return new ResponseEntity<>(attractionService.getActiveAttractions(popularity, name), HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/rate/{id}", consumes = "application/json", produces = "application/json")
+    private ResponseEntity<Attraction> rateAttraction(@PathVariable Integer id, @RequestBody Map<String, ?> input){
+        var rating = input.get("rating");
+        if(rating instanceof Double){
+           return new ResponseEntity<>(attractionService.rateAttraction(id, (Double) rating), HttpStatus.OK);
+        }
+        else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 }
