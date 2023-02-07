@@ -1,8 +1,11 @@
 package com.example.touristAttractions.services;
 
 import com.example.touristAttractions.domain.Country;
+import com.example.touristAttractions.domain.Municipality;
 import com.example.touristAttractions.repositories.CountryRepository;
+import com.example.touristAttractions.repositories.MunicipalityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,6 +15,8 @@ import java.util.List;
 public class CountryService {
     @Autowired
     private CountryRepository countryRepository;
+    @Autowired
+    private MunicipalityRepository municipalityRepository;
 
     public Country addCountry(Country country) {
         return countryRepository.save(country); // this waits for code to execute
@@ -29,5 +34,13 @@ public class CountryService {
         List<Country> countries = new ArrayList<>();
         countryRepository.findAll().forEach(countries::add);
         return countries;
+    }
+
+    public Municipality addMunicipality(Integer countryId, Municipality municipality) {
+        if(!countryRepository.existsById(countryId)){
+            return null;
+        }
+        municipality.setCountry(countryRepository.findById(countryId).get());
+        return municipalityRepository.save(municipality);
     }
 }

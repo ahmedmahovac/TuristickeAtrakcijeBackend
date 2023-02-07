@@ -1,6 +1,7 @@
 package com.example.touristAttractions.controllers;
 
 import com.example.touristAttractions.domain.Country;
+import com.example.touristAttractions.domain.Municipality;
 import com.example.touristAttractions.services.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,17 +28,22 @@ public class CountryController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public void deleteCountry(@RequestParam Integer id){
+    public void deleteCountry(@PathVariable Integer id){
         countryService.deleteCountry(id);
     }
 
     @GetMapping(path = "/{id}")
-    public @ResponseBody ResponseEntity<Country> getCountry(@RequestParam Integer id){
+    public @ResponseBody ResponseEntity<Country> getCountry(@PathVariable Integer id){
         return new ResponseEntity<>(countryService.getCountry(id), HttpStatus.OK);
     }
 
     @GetMapping(path = "")
     public @ResponseBody ResponseEntity<List<Country>> getAllCountries(){
         return new ResponseEntity<>(countryService.getAllCountries(), HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/{id}/municipalities", consumes = "application/json", produces = "application/json")
+    public @ResponseBody ResponseEntity<Municipality> addMunicipality(@PathVariable Integer id,@RequestBody Municipality municipality){
+        return new ResponseEntity<>(countryService.addMunicipality(id, municipality), HttpStatus.OK);
     }
 }

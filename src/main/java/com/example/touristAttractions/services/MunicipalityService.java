@@ -13,10 +13,6 @@ public class MunicipalityService {
     @Autowired
     private MunicipalityRepository municipalityRepository;
 
-    public Municipality addMunicipality(Municipality municipality) {
-        return municipalityRepository.save(municipality);
-    }
-
     public void deleteMunicipality(Integer id) {
         municipalityRepository.deleteById(id);
     }

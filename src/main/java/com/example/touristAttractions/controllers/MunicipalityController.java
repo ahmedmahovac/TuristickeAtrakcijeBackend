@@ -19,18 +19,13 @@ public class MunicipalityController {
     private MunicipalityService municipalityService;
 
 
-    @PostMapping(path = "", consumes = "application/json", produces = "application/json")
-    public @ResponseBody ResponseEntity<Municipality> addCountry(@RequestBody Municipality municipality){
-        return new ResponseEntity<>(municipalityService.addMunicipality(municipality), HttpStatus.OK);
-    }
-
     @DeleteMapping(path = "/{id}")
-    public void deleteCountry(@RequestParam Integer id){
+    public void deleteCountry(@PathVariable Integer id){
         municipalityService.deleteMunicipality(id);
     }
 
     @GetMapping(path = "/{id}")
-    public @ResponseBody ResponseEntity<Municipality> getMunicipality(@RequestParam Integer id){
+    public @ResponseBody ResponseEntity<Municipality> getMunicipality(@PathVariable Integer id){
         return new ResponseEntity<>(municipalityService.getMunicipality(id), HttpStatus.OK);
     }
 
