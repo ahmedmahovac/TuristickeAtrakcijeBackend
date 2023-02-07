@@ -1,4 +1,4 @@
-package com.example.touristAttractions.domain;
+package com.example.touristAttractions.model;
 
 public enum Popularity {
     POPULAR,

@@ -1,7 +1,7 @@
 package com.example.touristAttractions.controllers;
 
-import com.example.touristAttractions.domain.Country;
-import com.example.touristAttractions.domain.Municipality;
+import com.example.touristAttractions.model.Country;
+import com.example.touristAttractions.model.Municipality;
 import com.example.touristAttractions.services.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

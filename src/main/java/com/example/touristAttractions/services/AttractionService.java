@@ -1,7 +1,7 @@
 package com.example.touristAttractions.services;
 
-import com.example.touristAttractions.domain.Popularity;
-import com.example.touristAttractions.domain.Attraction;
+import com.example.touristAttractions.model.Popularity;
+import com.example.touristAttractions.model.Attraction;
 import com.example.touristAttractions.repositories.AttractionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,5 +50,31 @@ public class AttractionService {
         attraction.setRatingSum(attraction.getRatingSum()+rating); // setting new rating
         attraction.setRatingsCount(attraction.getRatingsCount()+1);
         return attractionRepository.save(attraction);
+    }
+
+
+    public void deleteAttraction(Integer id) {
+        attractionRepository.deleteById(id);
+    }
+
+    public Attraction updateAttraction(Integer id, Attraction attraction) {
+        if(!attractionRepository.existsById(id)) return null;
+        Attraction existingAttraction = attractionRepository.findById(id).get();
+        if(attraction.getActive()!=null){
+            existingAttraction.setActive(attraction.getActive());
+        }
+        if(attraction.getName()!=null){
+            existingAttraction.setName(attraction.getName());
+        }
+        if(attraction.getDescription()!=null){
+            existingAttraction.setDescription(attraction.getDescription());
+        }
+        if(attraction.getLat()!=null){
+            existingAttraction.setLat(attraction.getLat());
+        }
+        if(attraction.getLon()!=null){
+            existingAttraction.setLon(attraction.getLon());
+        }
+        return attractionRepository.save(existingAttraction);
     }
 }

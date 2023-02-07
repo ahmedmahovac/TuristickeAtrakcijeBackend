@@ -1,4 +1,4 @@
-package com.example.touristAttractions.domain;
+package com.example.touristAttractions.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

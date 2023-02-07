@@ -1,7 +1,7 @@
 package com.example.touristAttractions.services;
 
-import com.example.touristAttractions.domain.Attraction;
-import com.example.touristAttractions.domain.Municipality;
+import com.example.touristAttractions.model.Attraction;
+import com.example.touristAttractions.model.Municipality;
 import com.example.touristAttractions.repositories.AttractionRepository;
 import com.example.touristAttractions.repositories.MunicipalityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
