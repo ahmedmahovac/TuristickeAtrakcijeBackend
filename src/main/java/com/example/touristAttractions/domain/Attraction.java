@@ -1,6 +1,5 @@
 package com.example.touristAttractions.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -16,7 +15,7 @@ public class Attraction {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Municipality municipality;
 
-    private String title;
+    private String name;
 
     private String description;
 
@@ -38,12 +37,12 @@ public class Attraction {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {

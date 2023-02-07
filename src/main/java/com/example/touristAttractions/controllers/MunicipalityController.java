@@ -1,5 +1,6 @@
 package com.example.touristAttractions.controllers;
 
+import com.example.touristAttractions.domain.Attraction;
 import com.example.touristAttractions.domain.Country;
 import com.example.touristAttractions.domain.Municipality;
 import com.example.touristAttractions.services.CountryService;
@@ -32,5 +33,10 @@ public class MunicipalityController {
     @GetMapping(path = "")
     public @ResponseBody ResponseEntity<List<Municipality>> getAllMunicipalities(){
         return new ResponseEntity<>(municipalityService.getAllMunicipalities(), HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/{id}/attractions", consumes = "application/json", produces = "application/json")
+    public @ResponseBody ResponseEntity<Attraction> addAttraction(@PathVariable Integer id, @RequestBody Attraction attraction){
+        return new ResponseEntity<>(municipalityService.addAttraction(id, attraction), HttpStatus.OK);
     }
 }

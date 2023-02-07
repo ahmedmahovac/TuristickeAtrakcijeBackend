@@ -1,6 +1,8 @@
 package com.example.touristAttractions.services;
 
+import com.example.touristAttractions.domain.Attraction;
 import com.example.touristAttractions.domain.Municipality;
+import com.example.touristAttractions.repositories.AttractionRepository;
 import com.example.touristAttractions.repositories.MunicipalityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,9 @@ import java.util.List;
 public class MunicipalityService {
     @Autowired
     private MunicipalityRepository municipalityRepository;
+
+    @Autowired
+    private AttractionRepository attractionRepository;
 
     public void deleteMunicipality(Integer id) {
         municipalityRepository.deleteById(id);
@@ -26,5 +31,14 @@ public class MunicipalityService {
         List<Municipality> municipalities = new ArrayList<>();
         municipalityRepository.findAll().forEach(municipalities::add);
         return municipalities;
+    }
+
+    public Attraction addAttraction(Integer municipalityId, Attraction attraction) {
+        if(!municipalityRepository.existsById(municipalityId)){
+            return null;
+        }
+        Municipality municipality = municipalityRepository.findById(municipalityId).get();
+        attraction.setMunicipality(municipality);
+        return attractionRepository.save(attraction);
     }
 }
