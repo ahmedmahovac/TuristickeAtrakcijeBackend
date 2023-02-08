@@ -5,6 +5,7 @@ import com.example.touristAttractions.model.Attraction;
 import com.example.touristAttractions.model.Picture;
 import com.example.touristAttractions.model.Popularity;
 import com.example.touristAttractions.services.AttractionService;
+import com.example.touristAttractions.services.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,9 @@ public class AttractionController {
     @Autowired
     private AttractionService attractionService;
 
+    @Autowired
+    private FileStorageService fileStorageService;
+
     @GetMapping(path = "/search", produces = "application/json")
     public ResponseEntity<List<Attraction>> getActiveAttractions(@RequestParam(required = false, name = "popularity") Popularity popularity, @RequestParam(required = false, name = "name") String name){
         return new ResponseEntity<>(attractionService.getActiveAttractions(popularity, name), HttpStatus.OK);
@@ -38,8 +42,10 @@ public class AttractionController {
 
     @PostMapping(path = "/{id}/picture")
     public ResponseEntity<Picture> addPicture(@RequestParam("picture") MultipartFile picture){
-        return null;
+        return new ResponseEntity<>(fileStorageService.storeFile(picture), HttpStatus.OK);
     }
+
+    // maybe endpoint for multiple files upload?
 
 
     @DeleteMapping(path = "/{id}", produces = "application/json")
