@@ -1,5 +1,6 @@
 package com.example.touristAttractions.services;
 
+import com.example.touristAttractions.model.Attraction;
 import com.example.touristAttractions.model.Picture;
 import com.example.touristAttractions.repositories.AttractionRepository;
 import com.example.touristAttractions.repositories.PictureRepository;
@@ -26,8 +27,11 @@ public class FileStorageService {
     private PictureRepository pictureRepository;
 
     @Autowired
+    private AttractionRepository attractionRepository;
+
+    @Autowired
     public FileStorageService(Environment env) {
-        this.fileStorageLocation = Paths.get(env.getProperty("file.upload-dir", "./uploads"))
+        this.fileStorageLocation = Paths.get(env.getProperty("app.file.upload-dir", "./uploads"))
                 .toAbsolutePath().normalize();
 
         try {
@@ -47,7 +51,12 @@ public class FileStorageService {
         return fileNameParts[fileNameParts.length - 1];
     }
 
-    public Picture storeFile(MultipartFile file) {
+    public Picture storeFile(Integer id, MultipartFile file) {
+
+        if(!attractionRepository.existsById(id)){
+            return null;
+        }
+
         // Normalize file name
         String fileName =
                 new Date().getTime() + "-file." + getFileExtension(file.getOriginalFilename());
@@ -63,9 +72,10 @@ public class FileStorageService {
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             Picture picture = new Picture();
+            Attraction correspondingAttraction = attractionRepository.findById(id).get();
             picture.setPath(targetLocation.toString());
+            picture.setAttraction(correspondingAttraction);
             return pictureRepository.save(picture);
-
         } catch (IOException ex) {
             throw new RuntimeException("Could not store file " + fileName + ". Please try again!", ex);
         }

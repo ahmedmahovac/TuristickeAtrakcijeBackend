@@ -29,12 +29,12 @@ public class AttractionService {
                  minimum = 4.5;
              }
              Double minimumFinal = minimum; // workaround
-             allAttractions.stream().filter((attraction)->{
-                 return (attraction.getActive() && attraction.getRatingSum()>minimumFinal);
+             allAttractions = allAttractions.stream().filter((attraction)->{
+                 return (attraction.getActive() && attraction.getRatingAvg()>=minimumFinal);
              }).collect(Collectors.toList());
          }
          if(name!=null){
-             allAttractions.stream().filter((attraction)->{
+            allAttractions = allAttractions.stream().filter((attraction)->{
                  return attraction.getName().toLowerCase().contains(name.toLowerCase());
              }).collect(Collectors.toList());
          }
@@ -44,6 +44,7 @@ public class AttractionService {
 
     public Attraction rateAttraction(Integer id, Integer rating) {
         if(!attractionRepository.existsById(id)){
+            System.out.println(id);
             return null;
         }
         Attraction attraction = attractionRepository.findById(id).get();

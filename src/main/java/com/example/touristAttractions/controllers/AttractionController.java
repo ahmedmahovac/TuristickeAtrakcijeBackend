@@ -28,21 +28,27 @@ public class AttractionController {
 
     @GetMapping(path = "/search", produces = "application/json")
     public ResponseEntity<List<Attraction>> getActiveAttractions(@RequestParam(required = false, name = "popularity") Popularity popularity, @RequestParam(required = false, name = "name") String name){
+        // implement better solution for this, maybe use string only instead of enum
         return new ResponseEntity<>(attractionService.getActiveAttractions(popularity, name), HttpStatus.OK);
     }
 
     @PutMapping(path = "/rate/{id}", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Attraction> rateAttraction(@PathVariable Integer id, @RequestBody Map<String, ?> input){
         var rating = input.get("rating");
-        if(!(rating instanceof Integer) || (Integer)rating<1 || (Integer)rating>5){
+        // implement type check
+        if(Integer.parseInt(rating.toString())<1 || Integer.parseInt(rating.toString())>5){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(attractionService.rateAttraction(id, (Integer) rating), HttpStatus.OK);
+        Attraction updatedAttraction = attractionService.rateAttraction(id, Integer.parseInt(rating.toString()));
+        if(updatedAttraction==null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(updatedAttraction, HttpStatus.OK);
     }
 
     @PostMapping(path = "/{id}/picture")
-    public ResponseEntity<Picture> addPicture(@RequestParam("picture") MultipartFile picture){
-        return new ResponseEntity<>(fileStorageService.storeFile(picture), HttpStatus.OK);
+    public ResponseEntity<Picture> addPicture(@PathVariable Integer id, @RequestParam("picture") MultipartFile picture){
+        return new ResponseEntity<>(fileStorageService.storeFile(id, picture), HttpStatus.OK);
     }
 
     // maybe endpoint for multiple files upload?
@@ -55,11 +61,7 @@ public class AttractionController {
 
     @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Attraction> updateAttraction(@PathVariable Integer id, @RequestBody Attraction attraction){
-        Attraction updatedAttraction = attractionService.updateAttraction(id, attraction);
-        if(updatedAttraction==null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(updatedAttraction, HttpStatus.OK);
+        return new ResponseEntity<>(attractionService.updateAttraction(id, attraction), HttpStatus.OK);
     }
 
 }

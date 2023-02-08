@@ -1,5 +1,6 @@
 package com.example.touristAttractions.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -13,6 +14,7 @@ public class Attraction {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "municipality_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private Municipality municipality;
 
     private String name;
@@ -100,5 +102,9 @@ public class Attraction {
 
     public void setLon(Double lon) {
         this.lon = lon;
+    }
+
+    public Double getRatingAvg() {
+        return ratingSum.doubleValue()/ratingsCount;
     }
 }
