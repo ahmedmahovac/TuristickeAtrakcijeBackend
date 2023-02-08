@@ -34,10 +34,10 @@ public class AttractionController {
     @PutMapping(path = "/rate/{id}", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Attraction> rateAttraction(@PathVariable Integer id, @RequestBody Map<String, ?> input){
         var rating = input.get("rating");
-        if(rating instanceof Double){
-           return new ResponseEntity<>(attractionService.rateAttraction(id, (Double) rating), HttpStatus.OK);
+        if(!(rating instanceof Integer) || (Integer)rating<1 || (Integer)rating>5){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(attractionService.rateAttraction(id, (Integer) rating), HttpStatus.OK);
     }
 
     @PostMapping(path = "/{id}/picture")

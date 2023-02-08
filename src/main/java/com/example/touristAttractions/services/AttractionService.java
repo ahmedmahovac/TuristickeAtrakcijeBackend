@@ -42,7 +42,7 @@ public class AttractionService {
     }
 
 
-    public Attraction rateAttraction(Integer id, Double rating) {
+    public Attraction rateAttraction(Integer id, Integer rating) {
         if(!attractionRepository.existsById(id)){
             return null;
         }
