@@ -4,14 +4,20 @@ import com.example.touristAttractions.model.Attraction;
 import com.example.touristAttractions.model.Picture;
 import com.example.touristAttractions.repositories.AttractionRepository;
 import com.example.touristAttractions.repositories.PictureRepository;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -80,4 +86,26 @@ public class FileStorageService {
             throw new RuntimeException("Could not store file " + fileName + ". Please try again!", ex);
         }
     }
+
+
+    private Resource loadFileAsResource(String fileName) {
+        try {
+            Path filePath = Path.of(fileName);
+            Resource resource = new UrlResource(filePath.toUri());
+            if(resource.exists()) {
+                return resource;
+            } else {
+                throw new RuntimeException("File not found " + fileName);
+            }
+        } catch (MalformedURLException ex) {
+            throw new RuntimeException("File not found " + fileName, ex);
+        }
+    }
+
+
+    public Resource getPicture(Integer id) {
+        Picture picture = pictureRepository.findById(id).get();
+        return loadFileAsResource(picture.getPath());
+    }
+
 }

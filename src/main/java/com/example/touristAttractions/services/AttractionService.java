@@ -1,8 +1,10 @@
 package com.example.touristAttractions.services;
 
+import com.example.touristAttractions.model.Picture;
 import com.example.touristAttractions.model.Popularity;
 import com.example.touristAttractions.model.Attraction;
 import com.example.touristAttractions.repositories.AttractionRepository;
+import com.example.touristAttractions.repositories.PictureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,9 @@ import java.util.stream.Collectors;
 public class AttractionService {
     @Autowired
     private AttractionRepository attractionRepository;
+
+    @Autowired
+    private PictureRepository pictureRepository;
 
     public List<Attraction> getActiveAttractions(Popularity popularity, String name) {
         List<Attraction> allAttractions = new ArrayList<>();
@@ -77,5 +82,9 @@ public class AttractionService {
             existingAttraction.setLon(attraction.getLon());
         }
         return attractionRepository.save(existingAttraction);
+    }
+
+    public List<Picture> getPicturesInfo(Integer attractionId) {
+        return pictureRepository.findByAttractionId(attractionId);
     }
 }

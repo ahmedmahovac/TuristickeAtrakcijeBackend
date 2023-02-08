@@ -1,5 +1,6 @@
 package com.example.touristAttractions.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -13,8 +14,10 @@ public class Picture {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "attraction_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private Attraction attraction;
 
+    @JsonIgnore
     private String path;
 
     public Integer getId() {

@@ -6,13 +6,19 @@ import com.example.touristAttractions.model.Picture;
 import com.example.touristAttractions.model.Popularity;
 import com.example.touristAttractions.services.AttractionService;
 import com.example.touristAttractions.services.FileStorageService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.print.attribute.standard.Media;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -62,6 +68,36 @@ public class AttractionController {
     @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Attraction> updateAttraction(@PathVariable Integer id, @RequestBody Attraction attraction){
         return new ResponseEntity<>(attractionService.updateAttraction(id, attraction), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/{attractionId}/pictures/{pictureId}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<Resource> getPicture(@PathVariable Integer attractionId, @PathVariable Integer pictureId) {
+        // Load files as Resources
+        Resource resource = fileStorageService.getPicture(pictureId);
+
+        /*
+        // Try to determine file's content type
+        String contentType = null;
+        try {
+            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        } catch (IOException ex) {
+            System.out.println("Could not determine file type.");
+        }
+
+        // Fallback to the default content type if type could not be determined
+        if(contentType == null) {
+            contentType = "application/octet-stream";
+        }
+         */
+
+        return ResponseEntity.ok()
+                .body(resource);
+    }
+
+
+    @GetMapping(path = "/{attractionId}/pictures", produces = "application/json")
+    public ResponseEntity<List<Picture>> getPicturesInfo(@PathVariable Integer attractionId){
+        return new ResponseEntity<>(attractionService.getPicturesInfo(attractionId), HttpStatus.OK);
     }
 
 }
