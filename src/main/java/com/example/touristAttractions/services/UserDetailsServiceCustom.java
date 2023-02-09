@@ -1,7 +1,6 @@
 package com.example.touristAttractions.services;
 
 import com.example.touristAttractions.model.User;
-import com.example.touristAttractions.model.UserDetailsCustom;
 import com.example.touristAttractions.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,8 +22,11 @@ public class UserDetailsServiceCustom implements UserDetailsService {
         if(user==null){
             throw new UsernameNotFoundException(username);
         }
-        return org.springframework.security.core.userdetails.User.withUsername(user.getUsername()).password(user.getPassword()).build();
+        return user;
 
     }
 
+    public User registerUser(User user) {
+        return userRepository.save(user);
+    }
 }

@@ -1,7 +1,6 @@
 package com.example.touristAttractions.security;
 
-import com.example.touristAttractions.security.AuthEntryPointJwt;
-import com.example.touristAttractions.security.AuthTokenFilter;
+
 import com.example.touristAttractions.services.UserDetailsServiceCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -61,8 +60,11 @@ public class WebSecurityConfig {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests()
-                .anyRequest().authenticated();
+                .authorizeRequests(auth->{
+                    auth.anyRequest().permitAll();
+                });
+
+
 
         http.authenticationProvider(authenticationProvider());
 
