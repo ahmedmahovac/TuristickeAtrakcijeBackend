@@ -23,10 +23,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         prePostEnabled = true)
 public class WebSecurityConfig {
     @Autowired
-    UserDetailsServiceCustom userDetailsService;
+    private UserDetailsServiceCustom userDetailsService;
 
-    @Autowired
-    private AuthEntryPointJwt unauthorizedHandler;
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -58,13 +56,11 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests(auth->{
-                    auth.anyRequest().permitAll();
-                });
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+        http.authorizeHttpRequests().requestMatchers("/api/auth/**", "/api/attractions/search", "/api/attractions/rate/**").permitAll();
 
+        // requestMatchers("/api/auth/**").permitAll().
 
         http.authenticationProvider(authenticationProvider());
 

@@ -25,8 +25,4 @@ public class UserDetailsServiceCustom implements UserDetailsService {
         return user;
 
     }
-
-    public User registerUser(User user) {
-        return userRepository.save(user);
-    }
 }
