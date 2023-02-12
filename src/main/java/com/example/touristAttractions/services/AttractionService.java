@@ -24,6 +24,9 @@ public class AttractionService {
     public List<Attraction> getActiveAttractions(Popularity popularity, String name) {
         List<Attraction> allAttractions = new ArrayList<>();
          attractionRepository.findAll().forEach(allAttractions::add);
+        allAttractions = allAttractions.stream().filter((attraction)->{
+            return  attraction.getActive();
+        }).collect(Collectors.toList());
          if(popularity!=null){
              System.out.println("popularity nije null");
              // if it's VERYPOPULAR or EXTREMELYPOPULAR, it's automatically POPULAR
@@ -35,12 +38,12 @@ public class AttractionService {
              }
              Double minimumFinal = minimum; // workaround
              allAttractions = allAttractions.stream().filter((attraction)->{
-                 return (attraction.getActive() && attraction.getRatingAvg()>=minimumFinal);
+                 return attraction.getRatingAvg()>=minimumFinal;
              }).collect(Collectors.toList());
          }
          if(name!=null){
             allAttractions = allAttractions.stream().filter((attraction)->{
-                 return  (attraction.getActive() && attraction.getName().toLowerCase().contains(name.toLowerCase()));
+                 return  attraction.getName().toLowerCase().contains(name.toLowerCase());
              }).collect(Collectors.toList());
          }
          return allAttractions;
