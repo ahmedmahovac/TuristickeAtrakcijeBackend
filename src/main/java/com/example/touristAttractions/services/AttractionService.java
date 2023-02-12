@@ -40,7 +40,7 @@ public class AttractionService {
          }
          if(name!=null){
             allAttractions = allAttractions.stream().filter((attraction)->{
-                 return attraction.getName().toLowerCase().contains(name.toLowerCase());
+                 return  (attraction.getActive() && attraction.getName().toLowerCase().contains(name.toLowerCase()));
              }).collect(Collectors.toList());
          }
          return allAttractions;
