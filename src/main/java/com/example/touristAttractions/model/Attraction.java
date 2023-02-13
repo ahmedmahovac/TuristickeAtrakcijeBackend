@@ -105,6 +105,7 @@ public class Attraction {
     }
 
     public Double getRatingAvg() {
+        if(ratingsCount==0) return 0.0;
         return ratingSum.doubleValue()/ratingsCount;
     }
 }
