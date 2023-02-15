@@ -22,7 +22,7 @@ public class CountryService {
     }
 
     public void deleteCountry(Integer id) {
-        countryRepository.deleteById(id);
+         countryRepository.deleteById(id);
     }
 
     public Country getCountry(Integer id) {
@@ -36,10 +36,14 @@ public class CountryService {
     }
 
     public Municipality addMunicipality(Integer countryId, Municipality municipality) {
-        if(!countryRepository.existsById(countryId)){
+        if(!countryRepository.existsById(countryId)) {
             return null;
         }
         municipality.setCountry(countryRepository.findById(countryId).get());
         return municipalityRepository.save(municipality);
+    }
+
+    public List<Municipality> getMunicipalities(Integer id) {
+        return municipalityRepository.findByCountryId(id);
     }
 }

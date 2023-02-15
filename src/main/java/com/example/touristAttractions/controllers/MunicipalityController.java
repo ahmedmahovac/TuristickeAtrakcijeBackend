@@ -19,8 +19,9 @@ public class MunicipalityController {
 
 
     @DeleteMapping(path = "/{id}")
-    public void deleteCountry(@PathVariable Integer id){
+    public ResponseEntity deleteCountry(@PathVariable Integer id){
         municipalityService.deleteMunicipality(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}")

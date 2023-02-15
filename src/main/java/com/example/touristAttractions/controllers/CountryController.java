@@ -28,8 +28,9 @@ public class CountryController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public void deleteCountry(@PathVariable Integer id){
+    public ResponseEntity deleteCountry(@PathVariable Integer id){
         countryService.deleteCountry(id);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}")
@@ -45,5 +46,10 @@ public class CountryController {
     @PostMapping(path = "/{id}/municipalities", consumes = "application/json", produces = "application/json")
     public @ResponseBody ResponseEntity<Municipality> addMunicipality(@PathVariable Integer id,@RequestBody Municipality municipality){
         return new ResponseEntity<>(countryService.addMunicipality(id, municipality), HttpStatus.OK);
+    }
+
+    @GetMapping(path="/{countryId}/municipalities")
+    public @ResponseBody ResponseEntity<List<Municipality>> getMunicipalitiesForCountry(@PathVariable Integer countryId){
+        return new ResponseEntity<>(countryService.getMunicipalities(countryId), HttpStatus.OK);
     }
 }
