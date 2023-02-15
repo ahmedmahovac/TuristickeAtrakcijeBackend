@@ -38,4 +38,11 @@ public class MunicipalityController {
     public @ResponseBody ResponseEntity<Attraction> addAttraction(@PathVariable Integer id, @RequestBody Attraction attraction){
         return new ResponseEntity<>(municipalityService.addAttraction(id, attraction), HttpStatus.OK);
     }
+
+
+    @GetMapping(path="/{municipalityId}/attractions")
+    public @ResponseBody ResponseEntity<List<Attraction>> getAttractionsForMunicipality(@PathVariable Integer municipalityId){
+        return new ResponseEntity<>(municipalityService.getAttractionsByMunicipalityId(municipalityId), HttpStatus.OK);
+    }
+
 }

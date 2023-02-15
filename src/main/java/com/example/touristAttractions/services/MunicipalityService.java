@@ -41,4 +41,8 @@ public class MunicipalityService {
         attraction.setMunicipality(municipality);
         return attractionRepository.save(attraction);
     }
+
+    public List<Attraction> getAttractionsByMunicipalityId(Integer municipalityId) {
+        return attractionRepository.findByMunicipalityId(municipalityId);
+    }
 }
