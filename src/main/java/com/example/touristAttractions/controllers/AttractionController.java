@@ -60,9 +60,11 @@ public class AttractionController {
 
 
     @DeleteMapping(path = "/{id}", produces = "application/json")
-    public void deleteAttraction(@PathVariable Integer id){
+    public ResponseEntity deleteAttraction(@PathVariable Integer id){
         attractionService.deleteAttraction(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
+
 
     @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Attraction> updateAttraction(@PathVariable Integer id, @RequestBody Attraction attraction){
