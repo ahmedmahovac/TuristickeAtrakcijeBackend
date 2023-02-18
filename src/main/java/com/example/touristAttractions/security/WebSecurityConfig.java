@@ -1,6 +1,7 @@
 package com.example.touristAttractions.security;
 
 
+import com.example.touristAttractions.model.Role;
 import com.example.touristAttractions.services.UserDetailsServiceCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -53,16 +55,18 @@ public class WebSecurityConfig {
     // defines way of security to handle http requests
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.cors().and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.authorizeHttpRequests().requestMatchers("/api/auth/**", "/api/attractions/search", "/api/attractions/rate/**").hasAnyRole("USER", "ADMIN").anyRequest().permitAll();
+        http.authorizeHttpRequests().requestMatchers("/api/auth/**", "/api/attractions/search", "/api/attractions/rate/**").permitAll().anyRequest().authenticated();
         //http.authorizeHttpRequests().requestMatchers("/api/**").permitAll();
         // requestMatchers("/api/auth/**").permitAll().¸¸
 
         http.authenticationProvider(authenticationProvider());
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        System.out.println(http.toString());
 
         return http.build();
     }
