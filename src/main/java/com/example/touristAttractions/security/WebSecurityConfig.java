@@ -10,6 +10,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,10 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableGlobalMethodSecurity(
-        // securedEnabled = true,
-        // jsr250Enabled = true,
-        prePostEnabled = true)
+@EnableWebSecurity
 public class WebSecurityConfig {
     @Autowired
     private UserDetailsServiceCustom userDetailsService;
@@ -55,12 +53,12 @@ public class WebSecurityConfig {
     // defines way of security to handle http requests
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
+        http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        //http.authorizeHttpRequests().requestMatchers("/api/auth/**", "/api/attractions/search", "/api/attractions/rate/**").permitAll();
-        http.authorizeHttpRequests().requestMatchers("/api/**").permitAll();
-        // requestMatchers("/api/auth/**").permitAll().
+        http.authorizeHttpRequests().requestMatchers("/api/auth/**", "/api/attractions/search", "/api/attractions/rate/**").hasAnyRole("USER", "ADMIN").anyRequest().permitAll();
+        //http.authorizeHttpRequests().requestMatchers("/api/**").permitAll();
+        // requestMatchers("/api/auth/**").permitAll().¸¸
 
         http.authenticationProvider(authenticationProvider());
 

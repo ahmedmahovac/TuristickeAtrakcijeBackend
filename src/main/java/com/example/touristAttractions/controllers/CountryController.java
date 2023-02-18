@@ -40,6 +40,7 @@ public class CountryController {
 
     @GetMapping(path = "")
     public @ResponseBody ResponseEntity<List<Country>> getAllCountries(){
+        System.out.println("alloo");
         return new ResponseEntity<>(countryService.getAllCountries(), HttpStatus.OK);
     }
 
