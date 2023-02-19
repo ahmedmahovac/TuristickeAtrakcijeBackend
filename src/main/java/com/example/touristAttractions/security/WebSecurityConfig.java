@@ -59,8 +59,6 @@ public class WebSecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeHttpRequests().requestMatchers("/api/auth/**", "/api/attractions/search", "/api/attractions/rate/**").permitAll().anyRequest().authenticated();
-        //http.authorizeHttpRequests().requestMatchers("/api/**").permitAll();
-        // requestMatchers("/api/auth/**").permitAll().¸¸
 
         http.authenticationProvider(authenticationProvider());
 
